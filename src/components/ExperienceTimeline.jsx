@@ -1,10 +1,37 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-import { HardHat, Code2, Brain, MapPin, Terminal } from 'lucide-react'
+import { HardHat, Code2, Brain, MapPin, Terminal, Radio } from 'lucide-react'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const phases = [
+  {
+    id: 'phase4',
+    phase: 'Present',
+    label: 'Independent Research & Consulting',
+    Icon: Radio,
+    accentClass: 'text-emerald-400',
+    accentBg: 'bg-emerald-400',
+    accentBorder: 'border-emerald-400',
+    accentGlow: '0 0 14px rgba(52,211,153,0.8), 0 0 30px rgba(52,211,153,0.3)',
+    phaseTagClass: 'bg-emerald-400/10 text-emerald-400 border-emerald-400/30',
+    roles: [
+      {
+        id: 'consulting',
+        title: 'Systems Architect & Technical Consultant (Freelance)',
+        company: 'Independent Engineering / Stealth R&D',
+        periodRaw: 'JUL 2024 → PRESENT',
+        location: 'Canada',
+        yoe: 'Active',
+        impact: [
+          'Architecting highly available systems and providing technical oversight for industrial digital transformation projects.',
+          'Developing WuRAD — a proprietary R&D initiative focused on next-generation industrial safety interfaces and advanced situational awareness systems for high-complexity environments.',
+          'Engineering a real-time data-scraping and predictive engine for flight availability optimization, demonstrating production-grade streaming ingestion and low-latency decision pipelines.',
+        ],
+        tags: ['Proprietary R&D', 'Industrial Safety', 'Real-Time Systems', 'Data Pipelines', 'Cyber-Physical', 'Stealth R&D'],
+      },
+    ],
+  },
   {
     id: 'phase3',
     phase: 'Phase 3',
@@ -18,17 +45,18 @@ const phases = [
     roles: [
       {
         id: 'cognixr',
-        title: 'VR/AR & Bio-Signal Developer',
+        title: 'CTO Advisor & Technical Consultant',
         company: 'Cogni XR Health',
         periodRaw: 'JUL 2022 → JUL 2024',
         location: 'Montreal, QC',
         yoe: '+3 yrs',
         impact: [
-          'Architected immersive VR/AR applications using Unity and C# for clinical therapeutic deployment.',
-          'Engineered real-time visualization of raw EEG brain signals to trigger in-scene therapeutic responses.',
+          'Mandated to provide high-level architectural oversight and technical roadmapping for a health-tech XR platform.',
+          'Advised on BCI-VR integration strategies and clinical engineering workflows, translating investor-driven product requirements into actionable technical specifications.',
+          'Engineered real-time visualization of raw EEG brain signals to trigger in-scene therapeutic responses within Unity VR environments.',
           'Integrated VR applications with backend APIs for autonomous headset deployment workflows.',
         ],
-        tags: ['Unity', 'C#', 'EEG / BCI', 'VR / AR', 'REST APIs', 'Clinical Tech'],
+        tags: ['Unity', 'C#', 'EEG / BCI', 'VR / AR', 'REST APIs', 'Clinical Tech', 'Technical Advisory'],
       },
     ],
   },
@@ -97,17 +125,29 @@ const phases = [
     roles: [
       {
         id: 'ocp',
-        title: 'HSE Coordinator & Maintenance Planner',
-        company: 'Groupe OCP',
+        title: 'Lead Reliability Engineer & Field Supervisor',
+        company: 'Global Tier-1 Mining Corporation',
         periodRaw: 'JUL 2006 → MAR 2017',
-        location: 'Morocco',
+        location: 'North Africa',
         yoe: '11 yrs',
+        operationalContext: '📍 Remote Desert Operations · FIFO (30/30 Rotation)',
         impact: [
-          'Implemented digital maintenance workflows to optimize MTTR / MTBF across heavy industrial equipment.',
-          'Supervised mechanical projects using SolidWorks and AutoCAD in large-scale mining operations.',
-          'Enforced HSE protocols under DuPont methodology — zero-tolerance safety culture across all sites.',
+          'Deployed in a remote desert camp under a rigorous Fly-In-Fly-Out (FIFO) schedule (70-hour work weeks), providing technical oversight of cross-functional mechanical and systems teams while designing resilient IT/OT systems capable of surviving extreme environmental and operational stress.',
+          'Managed and led a high-performance team of mechanical maintenance technicians in the field, coordinating complex dragline workshop operations and ensuring zero-incident safety compliance under high-pressure 24/7 schedules.',
+          'Architected and developed a full-stack web application (PHP/MySQL) to digitize maintenance tracking and reliability metrics for ultra-class mining assets.',
+          'Replaced manual tracking systems with a centralized digital dashboard, automating the calculation of critical industrial KPIs including Mean Time Between Failures (MTBF) and Mean Time To Repair (MTTR).',
+          'Bridged physical sensor logs with a digital interface to significantly optimize asset uptime during massive mechanical and structural upgrades.',
+          'Acted as the technical liaison between floor execution teams and the Reliability Engineering Department, ensuring strict adherence to digitized Standard Operating Procedures (SOPs) and safety protocols.',
         ],
-        tags: ['HSE / DuPont', 'MTTR / MTBF', 'SolidWorks', 'AutoCAD', 'Maintenance Mgmt', 'Mining Ops'],
+        engineeringMandate: {
+          label: 'Engineering Probation (Approbation) Mandate',
+          context: '6-month specialized engineering deployment following 1 year of advanced corporate technical training',
+          highlights: [
+            'Mechanical Digital Twin & FEA Simulation: Engineered a high-precision 3D digital twin of a dragline orientation gear system in SolidWorks; conducted advanced Finite Element Analysis (FEA) and constraint simulations to validate alternative bearing models, translating American technical specifications into French industrial standards (denture corrigée).',
+            'Full-Stack EDMS Development: Designed and deployed a secure PHP/MySQL intranet application for the Engineering Office (Bureau d\'Études) to centralize AutoCAD blueprint repositories and technical schemas, enabling structured cross-departmental access and version control.',
+          ],
+        },
+        tags: ['HSE / DuPont', 'MTTR / MTBF', 'SolidWorks', 'FEA', 'AutoCAD', 'PHP / MySQL', 'Digital Twin', 'Mining Ops'],
       },
     ],
   },
@@ -207,6 +247,25 @@ function RoleCard({ role, phase, cardIndex, globalIndex }) {
             )}
           </div>
 
+          {/* Operational context badge (amber — field/industrial) */}
+          {role.operationalContext && (
+            <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg border border-amber-400/25 bg-amber-400/8 w-fit">
+              <span className="font-mono text-[11px] font-semibold text-amber-400 tracking-wide">
+                {role.operationalContext}
+              </span>
+            </div>
+          )}
+
+          {/* Availability note (emerald — active/live status) */}
+          {role.availabilityNote && (
+            <div className="flex items-start gap-2.5 mb-4 px-3.5 py-3 rounded-lg border border-emerald-400/25 bg-emerald-400/5">
+              <span className="mt-[3px] shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)] animate-pulse" />
+              <span className="font-mono text-[11px] text-emerald-400/90 leading-relaxed">
+                {role.availabilityNote}
+              </span>
+            </div>
+          )}
+
           {/* Impact bullets */}
           <ul className="flex flex-col gap-2 mb-4">
             {role.impact.map((point, i) => (
@@ -216,6 +275,31 @@ function RoleCard({ role, phase, cardIndex, globalIndex }) {
               </li>
             ))}
           </ul>
+
+          {/* Engineering mandate sub-section */}
+          {role.engineeringMandate && (
+            <div className="mt-4 rounded-lg border border-amber-400/20 bg-amber-400/5 overflow-hidden">
+              {/* Mandate header */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 px-3.5 py-2.5 border-b border-amber-400/15">
+                <span className="font-mono text-[11px] font-bold text-amber-400 tracking-wide">
+                  ⚙ {role.engineeringMandate.label}
+                </span>
+                <span className="hidden sm:block text-amber-400/30 text-[10px] mx-1">·</span>
+                <span className="font-mono text-[10px] text-amber-400/50 italic">
+                  {role.engineeringMandate.context}
+                </span>
+              </div>
+              {/* Mandate bullets */}
+              <ul className="flex flex-col gap-2.5 p-3.5">
+                {role.engineeringMandate.highlights.map((point, i) => (
+                  <li key={i} className="flex items-start gap-2.5">
+                    <span className="mt-[7px] shrink-0 w-1 h-1 rounded-full bg-amber-400/50" />
+                    <span className="text-xs text-text-secondary leading-relaxed">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Tag strip */}
           <div className="flex flex-wrap gap-1.5 pt-3 border-t border-border">
@@ -276,9 +360,9 @@ export default function ExperienceTimeline() {
             Professional Experience
           </h2>
           <p className="text-text-secondary max-w-xl mx-auto">
-            From 11 years forging operational resilience in Moroccan heavy industry to
-            architecting intelligent cyber-physical systems in Canada — a deliberate,
-            compounding evolution.
+            From 11 years forging operational resilience in heavy industry to
+            architecting intelligent cyber-physical systems and conducting graduate-level
+            research in Canada — a deliberate, compounding evolution.
           </p>
         </motion.div>
 

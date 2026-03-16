@@ -101,4 +101,36 @@
     );
     pointer-events: none;
   }
+
+  /*
+    Below-fold rendering deferral — tells the browser to skip layout and paint
+    for off-screen sections until they approach the viewport.
+    contain-intrinsic-size is a conservative estimate to keep scrollbar height stable.
+    Only applied to sections below the hero; #hero and #about are above the fold.
+  */
+  section:not(#hero):not(#about) {
+    content-visibility: auto;
+    contain-intrinsic-block-size: 700px;
+  }
+
+  /* Infinite horizontal marquee — used in IndustrialOps certifications strip */
+  .animate-marquee {
+    animation: marquee 28s linear infinite;
+    will-change: transform;
+  }
+
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
 }

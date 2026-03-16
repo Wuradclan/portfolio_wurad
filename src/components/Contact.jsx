@@ -24,14 +24,14 @@ const socials = [
   {
     icon: Mail,
     label: 'Email',
-    href: 'mailto:morad@wurad.dev',
+    href: 'mailto:wurad.ait@gmail.com',
     desc: 'Direct contact',
   },
 ]
 
 const locations = [
-  { city: 'Edmonton', region: 'Alberta, Canada', flag: '🇨🇦', primary: true },
-  { city: 'Agadir', region: 'Souss-Massa, Morocco', flag: '🇲🇦', primary: false },
+  { city: 'Canada', region: 'Open to Remote Roles', flag: '🇨🇦', primary: true },
+  { city: 'North Africa', region: 'Remote-Friendly', flag: '🌍', primary: false },
 ]
 
 export default function Contact() {
@@ -83,8 +83,8 @@ export default function Contact() {
               <span className="text-text-primary font-medium">Cyber-Physical Security</span>.
             </p>
             <a
-              href="mailto:morad@wurad.dev"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-lg bg-orange-DEFAULT hover:bg-orange-dim text-background font-semibold shadow-orange-glow transition-all duration-200 hover:scale-105"
+              href="mailto:wurad.ait@gmail.com"
+              className="inline-flex items-center gap-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 shadow-orange-glow"
             >
               <Mail size={16} />
               Get in Touch
@@ -170,11 +170,11 @@ export default function Contact() {
           </span>
         </div>
         <p className="text-xs text-text-muted">
-          © {new Date().getFullYear()} Morad Ait (WuRAD) · Built with Vite, React &
+          © {new Date().getFullYear()} Wurad A. · Built with Vite, React &
           Framer Motion
         </p>
         <p className="text-[11px] text-text-muted/60 mt-1">
-          Systems Architect & Industrial AI Specialist · Edmonton, AB · Agadir, Morocco
+          Systems Architect & Industrial AI Specialist · Canada · Open to Remote Roles
         </p>
       </div>
     </section>

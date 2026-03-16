@@ -91,9 +91,9 @@ const phases = [
       {
         id: 'ocp',
         title: 'HSE Coordinator & Maintenance Planner',
-        company: 'Groupe OCP',
+        company: 'Global Tier-1 Mining Corporation',
         period: 'Jul 2006 – Mar 2017',
-        location: 'Morocco',
+        location: 'North Africa',
         impact: [
           'Implemented digital workflows for industrial maintenance management to optimize equipment availability (MTTR / MTBF).',
           'Supervised mechanical engineering projects using SolidWorks and AutoCAD in a large-scale mining environment.',

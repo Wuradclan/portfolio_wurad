@@ -74,9 +74,8 @@ export default function Navbar() {
           ))}
           <li className="ml-2">
             <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, '#contact')}
-              className="px-4 py-2 text-sm font-semibold text-background bg-orange-DEFAULT rounded hover:bg-orange-dim transition-colors duration-200 shadow-orange-sm"
+              href="mailto:wurad.ait@gmail.com"
+              className="border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md transition-all duration-200 font-semibold text-sm"
             >
               Hire Me
             </a>
@@ -117,9 +116,8 @@ export default function Navbar() {
               ))}
               <li className="pt-3">
                 <a
-                  href="#contact"
-                  onClick={(e) => handleNavClick(e, '#contact')}
-                  className="block text-center py-2.5 text-sm font-semibold text-background bg-orange-DEFAULT rounded hover:bg-orange-dim transition-colors"
+                  href="mailto:wurad.ait@gmail.com"
+                  className="block text-center py-2.5 text-sm font-semibold border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white rounded-md transition-all duration-200"
                 >
                   Hire Me
                 </a>

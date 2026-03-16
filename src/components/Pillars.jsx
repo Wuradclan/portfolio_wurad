@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { HardHat, Shield, Brain, Activity, Cpu, Lock } from 'lucide-react'
+import { HardHat, Shield, Brain, Activity, Cpu, Lock, LayoutTemplate, CheckCircle2 } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 
 const pillars = [
@@ -7,49 +7,51 @@ const pillars = [
     id: 'reliability',
     icon: HardHat,
     tag: '01 — INDUSTRIAL',
-    title: 'Reliability Engineering',
-    subtitle: 'Physical Layer Operations',
+    title: 'Reliability & OT Operations',
+    subtitle: 'Reliability & OT Operations',
     accent: '#f97316',
     description:
-      'Specialist in industrial asset reliability with hands-on OCP Group (mining sector) deployment experience. Translating raw operational data into actionable maintenance intelligence.',
+      'Specialist in industrial asset reliability with hands-on deployment experience in Tier-1 global mining. Translating raw operational telemetry into actionable maintenance intelligence.',
     skills: [
-      { icon: Activity, label: 'MTTR / MTBF Optimization', desc: 'Mean-time analytics driving uptime improvements' },
-      { icon: HardHat, label: 'DuPont Safety Culture', desc: 'HSE Coordination trained by DuPont coaches' },
-      { icon: Cpu, label: 'Bureau de Méthodes', desc: 'Structured workflow deployment in mining operations' },
+      { icon: Activity,      label: 'MTTR / MTBF Optimization',  desc: 'Mean-time analytics driving heavy machinery uptime' },
+      { icon: HardHat,       label: 'DuPont Safety Culture',      desc: 'HSE Coordination trained by global safety frameworks' },
+      { icon: Cpu,           label: 'Reliability Engineering',    desc: 'Structured SOP and digital workflow deployment in complex physical operations' },
     ],
     stat: { value: '99.2%', label: 'Asset Uptime Target' },
+    siteReady: { label: 'Canadian Industrial Site-Ready', certs: 'CSO · H2S · CSTS 2020' },
   },
   {
     id: 'security',
     icon: Shield,
     tag: '02 — SECURITY',
     title: 'Cyber-Physical Security',
-    subtitle: 'McGill-Certified Architecture',
+    subtitle: 'Cyber-Physical Security',
     accent: '#f97316',
     description:
-      'McGill University Applied Cybersecurity graduate. Architecting defences for converged IT/OT environments where a software vulnerability can have physical-world consequences.',
+      'Architecting robust cyber defenses for converged IT/OT environments where software vulnerabilities have immediate physical-world consequences. McGill-certified in Applied Cybersecurity.',
     skills: [
-      { icon: Shield, label: 'Security Architecture', desc: 'A-grade in Security Architecture & Design' },
-      { icon: Lock, label: 'Risk Management (4.0)', desc: 'A-grade in Security Risk Management' },
-      { icon: Cpu, label: 'Secure IoT / ICS', desc: 'Securing industrial control & sensor networks' },
+      { icon: Shield,        label: 'Security Architecture & Design', desc: 'Building resilient, fault-tolerant network topologies' },
+      { icon: Lock,          label: 'Enterprise Risk Management',     desc: 'Systemic risk mapping and threat modeling' },
+      { icon: Cpu,           label: 'Secure IoT / ICS',              desc: 'Hardening industrial control systems and edge-sensor networks' },
     ],
-    stat: { value: '4.0', label: 'Cybersecurity GPA (McGill)' },
+    stat: { value: 'IT/OT', label: 'Convergence Specialization' },
   },
   {
     id: 'intelligence',
     icon: Brain,
-    tag: '03 — INTELLIGENCE',
-    title: 'AI & Extended Reality',
-    subtitle: 'Intelligent Systems Design',
+    tag: '03 — INTELLIGENCE & ARCHITECTURE',
+    title: 'Spatial Computing & AI',
+    subtitle: 'Spatial Computing & AI Pipelines',
     accent: '#f97316',
     description:
-      'Building next-generation diagnostic and situational-awareness systems that fuse AI with immersive XR interfaces. Specializing in applications where lives depend on the accuracy of the model.',
+      'Building next-generation diagnostic systems. Fusing predictive AI with immersive XR interfaces, grounded in a formal AEC in VR & AR Specialist (Champlain College) and backed by master\'s-level software engineering methodologies.',
     skills: [
-      { icon: Brain, label: 'Predictive AI Models', desc: 'ML pipelines for industrial failure prediction' },
-      { icon: Activity, label: 'VR Diagnostics (BCI)', desc: 'Brain-Computer Interface + VR neuro-diagnostics' },
-      { icon: Cpu, label: 'Kinetic Dexterity', desc: 'AI-driven platform for dyspraxia rehabilitation' },
+      { icon: Cpu,            label: 'Data Engineering & Big Data',    desc: 'Architecting scalable data warehousing pipelines' },
+      { icon: Activity,       label: 'XR Architecture & Spatial Computing', desc: 'Formal AEC credential applied to BCI-VR neuro-diagnostics and industrial spatial UI' },
+      { icon: Brain,          label: 'Predictive ML Models',           desc: 'Deploying AI for industrial failure prediction and clinical rehabilitation' },
+      { icon: LayoutTemplate, label: 'Enterprise Systems Analysis',    desc: 'End-to-end software architecture and lifecycle management' },
     ],
-    stat: { value: 'XR+AI', label: 'Neurotech Specialization' },
+    stat: { value: 'HA', label: 'High-Availability Systems' },
   },
 ]
 
@@ -118,6 +120,22 @@ function PillarCard({ pillar, index }) {
             </li>
           ))}
         </ul>
+
+        {/* Canadian site-ready credential badge */}
+        {pillar.siteReady && (
+          <div className="flex items-center gap-2.5 mt-4 px-3 py-2.5 rounded-lg border border-amber-400/25 bg-amber-400/5 w-fit">
+            <CheckCircle2 size={12} className="text-amber-400 shrink-0" />
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="font-mono text-[10px] font-semibold text-amber-400 tracking-wide">
+                {pillar.siteReady.label}
+              </span>
+              <span className="font-mono text-[9px] text-amber-400/40">·</span>
+              <span className="font-mono text-[10px] text-amber-400/70">
+                {pillar.siteReady.certs}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   )
