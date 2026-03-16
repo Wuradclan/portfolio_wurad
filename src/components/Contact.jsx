@@ -6,19 +6,19 @@ const socials = [
   {
     icon: Linkedin,
     label: 'LinkedIn',
-    href: 'https://linkedin.com/in/wurad',
+    href: 'https://www.linkedin.com/in/wurad-a/',
     desc: 'Professional network',
   },
   {
     icon: Github,
     label: 'GitHub',
-    href: 'https://github.com/wurad',
+    href: 'https://github.com/wurad-a',
     desc: 'Open source work',
   },
   {
     icon: Gitlab,
     label: 'GitLab',
-    href: 'https://gitlab.com/wurad',
+    href: 'https://gitlab.com/wurad-a',
     desc: 'Featured projects',
   },
   {
@@ -84,6 +84,7 @@ export default function Contact() {
             </p>
             <a
               href="mailto:wurad.ait@gmail.com"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 shadow-orange-glow"
             >
               <Mail size={16} />

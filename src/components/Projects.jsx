@@ -14,7 +14,7 @@ const projects = [
     description:
       'Architected a clinical Virtual Reality application to rehabilitate motor coordination (reaching, grasping, rotating) in children with Dyspraxia (DCD). The system disguises therapeutic exercises as engaging mini-games while streaming real-time biomechanical data to pediatric therapists.',
     techStack: ['Unity', 'C#', 'HTC Vive Pro', 'Eye-Tracking API', 'WebSocket', 'FastAPI', 'Python'],
-    link: 'https://gitlab.com',
+    link: 'https://gitlab.com/wurad-a',
     linkLabel: 'View on GitLab',
     linkIcon: ExternalLink,
     stealth: false,
@@ -109,7 +109,7 @@ const projects = [
     description:
       'A full-stack monorepo system for tracking, maintenance scheduling, and lifecycle management of industrial tools and equipment. Built with a microservices architecture for deployment in mining and heavy-industry environments.',
     techStack: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker', 'Turborepo'],
-    link: 'https://github.com',
+    link: 'https://github.com/wurad-a',
     linkLabel: 'View Repository',
     linkIcon: GitBranch,
     stealth: false,
