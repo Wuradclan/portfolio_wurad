@@ -6,19 +6,19 @@ const socials = [
   {
     icon: Linkedin,
     label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/wurad-a/',
+    href: 'https://www.linkedin.com/in/muradait/',
     desc: 'Professional network',
   },
   {
     icon: Github,
     label: 'GitHub',
-    href: 'https://github.com/wurad-a',
+    href: 'https://github.com/Wuradclan',
     desc: 'Open source work',
   },
   {
     icon: Gitlab,
     label: 'GitLab',
-    href: 'https://gitlab.com/wurad-a',
+    href: 'https://gitlab.com/Wurad',
     desc: 'Featured projects',
   },
   {
