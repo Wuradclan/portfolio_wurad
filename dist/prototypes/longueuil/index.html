@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Revu | Explorez Longueuil en AR</title>
+    <meta name="description" content=" aapplication Ar en 360 ">
+    <script src="Scripts/aframe.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-entity camera look-controls="enabled: true" wasd-controls="enabled: false">
+        <a-entity position="0 0 -0.5" geometry="primitive: ring; radiusOuter: 0.010; radiusInner: 0.007" material="color: #4CC3D9; shader: flat; transparent: true; opacity: 0.5" cursor="fuse: true; maxDistance: 500; timeout: 1000"></a-entity>
+      </a-entity>
+      <a-sky id="pano" src="images/pharmaprix.webp" rotation="0 -60 0" radius="5000" color="#fff"></a-sky>
+      <a-image height="21" width="62" src="images/logoville.webp" position="-50 50 -100" rotation="0 10 0"></a-image>
+      <!-- 
+      <a-text id="txtfabrique" value="Maison de la pa brique" color="#000000" position="10 10 -20" geometry="primitive:plane" visible="false"></a-text>
+      <a-text id="txtpharma" value="Banque de Montreal en 1918" position="20 10 -20"geometry="primitive:plane" visibile="true"></a-text>
+      
+      <a-image height="30" width="45" src="credits.png" position="10 10 120" rotation="0 190 0"></a-image>
+        -->
+      <a-image id="fabrique" height="100" width="45" src="images/spot2.webp" position="500 10 -300" rotation="0 -60 0" opacity="0.5" visible="true">
+        <a-mouseenter opacity="1"></a-mouseenter>
+        <a-mouseleave opacity="0.5"></a-mouseleave>
+      </a-image>
+      
+      <a-image id="pharmaprix" height="50" width="45" src="images/spot.webp" position="-300 10 200" rotation="0 0 0" opacity="0.5" visible="true">
+        <a-mouseenter opacity="1"></a-mouseenter>
+        <a-mouseleave opacity="0.5"></a-mouseleave>
+      </a-image>
+      
+      <!-- <a-image id="disland" height="12" width="56" src="disland-button.png" position="60 -20 200" rotation="0 200 0" opacity="0.5" visible="true">
+        <a-mouseenter opacity="1"></a-mouseenter>
+        <a-mouseleave opacity="0.5"></a-mouseleave>
+      </a-image>
+        -->
+    </a-scene>
+  </body>
+  
+  <script>
+        
+    var sky = document.querySelector('#pano');
+    
+    
+    var pharmaprix = document.querySelector('#pharmaprix');
+    var fabrique = document.querySelector('#fabrique');
+    
+
+    
+    
+    document.querySelector('#pharmaprix').addEventListener('click', function() {
+      sky.setAttribute('src', 'images/pharmaprix.webp');
+      sky.setAttribute('rotation', '0 -60 0');
+      this.setAttribute('visible', 'false');
+      
+      
+      fabrique.setAttribute('visible', 'true');
+      fabrique.setAttribute('position', '280 20 -150');
+      fabrique.setAttribute('rotation', '0 -40 0');
+
+    
+     
+      
+    });
+    
+    document.querySelector('#fabrique').addEventListener('click', function() {
+      sky.setAttribute('src', 'images/fabrique.webp');
+      sky.setAttribute('rotation', '0 -100 0');
+      this.setAttribute('visible', 'false');
+      
+      pharmaprix.setAttribute('visible', 'true');
+      pharmaprix.setAttribute('position', '-300 10 -200');
+      pharmaprix.setAttribute('rotation', '0 -60 0');
+      
+      
+      
+    });
+
+    
+  </script>
+</html>

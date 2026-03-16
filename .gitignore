@@ -1,0 +1,9 @@
+.DS_Store
+
+node_modules/.DS_Store
+dist/.DS_Store
+.DS_Store
+public/.DS_Store
+node_modules/sharp/.DS_Store
+node_modules/@img/.DS_Store
+node_modules/.vite/.DS_Store

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Lock, Brain, Wrench, Activity, Code2, GitBranch, HardHat, Cpu, Radio, ChevronRight, CircuitBoard, Globe } from 'lucide-react'
+import { ExternalLink, Lock, Brain, Wrench, Activity, Code2, GitBranch, HardHat, Cpu, Radio, ChevronRight, CircuitBoard, Globe, Instagram, Store, Glasses } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 
 const projects = [
@@ -50,6 +50,67 @@ const projects = [
       'Node.js REST API backend on Railway with automated real-time data ingestion from live flight availability sources.',
       'Distributed cloud architecture engineered for high availability and elastic scaling under variable traffic loads.',
       'End-to-end prediction engine delivering actionable flight window recommendations to pass holders in real time.',
+    ],
+  },
+  {
+    id: 'souk-el-had',
+    icon: Store,
+    status: 'mvp',
+    statusLabel: 'In Development · MVP Phase',
+    tag: 'Digital Transformation · React · Node.js · E-Commerce · SEO',
+    title: 'Souk El Had Digital Ecosystem',
+    subtitle: 'Traditional Commerce → Digital Economy',
+    description:
+      'Architecting a full-stack digital transformation for a major traditional retail hub. Building a scalable marketplace infrastructure to connect 10,000+ merchants with a modern searchable directory and social ecosystem.',
+    techStack: ['React', 'Node.js', 'SEO', 'Digital Branding', 'Social Media Strategy'],
+    link: 'https://soukelhad.ma',
+    linkLabel: 'Visit Website',
+    linkIcon: Globe,
+    secondaryLink: {
+      href: 'https://www.instagram.com/soukelhad.ma',
+      label: 'Instagram',
+      icon: Instagram,
+    },
+    stealth: false,
+    image: {
+      src: '/assets/soukelhad-hero.webp',
+      alt: 'Souk El Had — digital marketplace for one of Africa\'s largest traditional retail hubs.',
+      label: 'Souk El Had Platform',
+      sublabel: 'soukelhad.ma · 10,000+ Merchants',
+    },
+    highlights: [
+      'Architecting a scalable marketplace directory to digitise 10,000+ physical vendors within a major traditional retail hub.',
+      'Developed a social media presence strategy on Instagram, connecting the physical marketplace with a digital audience.',
+      'Designing a Node.js API backend to power real-time vendor listings, search, and discovery for non-technical merchants.',
+      'Implemented SEO and local search optimisation to drive organic traffic to the hub\'s online presence.',
+    ],
+  },
+  {
+    id: 'longueuil-vr',
+    icon: Glasses,
+    status: 'finalist',
+    statusLabel: 'Award-Winning · Finalist',
+    tag: 'Web AR · GPS · 3D Reconstruction · Civic Tech',
+    title: 'Revu: Explorez Longueuil en AR',
+    subtitle: 'Défi Technologie Longueuil · Award-Winning AR Ecosystem',
+    description:
+      'Award-winning AR ecosystem for civic heritage. Developed a Web AR platform featuring GPS-triggered 360° panoramas and 3D reconstructions (e.g., the historical Château Fort) to overlay three centuries of city history onto modern urban environments.',
+    techStack: ['Web AR', 'A-Frame', 'GPS Detection', '3D Reconstruction', 'Agile Development'],
+    link: '/prototypes/longueuil/index.html',
+    linkLabel: 'Live Demo',
+    linkIcon: ExternalLink,
+    stealth: false,
+    image: {
+      src: '/assets/longueuil-preview.webp',
+      alt: 'Revu — Web AR platform overlaying historical 360° panoramas onto the streets of Longueuil.',
+      label: 'Revu AR Platform',
+      sublabel: 'Défi Technologie Longueuil · Award-Winning',
+    },
+    highlights: [
+      'Developed a Web AR civic platform during a competitive tech challenge, earning finalist / award-winning recognition.',
+      'Engineered GPS-triggered 360° panoramic environments to immersively overlay 300 years of Longueuil urban history.',
+      'Architected 3D reconstruction pipelines to digitally restore landmarks such as the historical Château Fort for in-place AR viewing.',
+      'Implemented real-time skybox swapping via JavaScript setAttribute for seamless scene transitions without page reloads.',
     ],
   },
   {
@@ -211,10 +272,12 @@ const projects = [
 
 const statusStyles = {
   active:   'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+  mvp:      'bg-sky-500/10 text-sky-400 border-sky-500/30',
   stealth:  'bg-orange-DEFAULT/10 text-orange-DEFAULT border-orange-DEFAULT/30',
   past:     'bg-zinc-500/10 text-zinc-400 border-zinc-500/30',
   legacy:   'bg-amber-500/10 text-amber-400 border-amber-500/30',
   hardware: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
+  finalist: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
 }
 
 // Pipeline signal-chain diagram (used by BCI card)
@@ -588,8 +651,8 @@ function ProjectCard({ project, index }) {
           ))}
         </div>
 
-        {/* Link */}
-        <div className="pt-2">
+        {/* Links */}
+        <div className="pt-2 flex flex-wrap items-center gap-4">
           {project.link ? (
             <a
               href={project.link}
@@ -610,6 +673,26 @@ function ProjectCard({ project, index }) {
               {project.linkLabel}
             </span>
           )}
+
+          {/* Secondary link (e.g. Instagram, docs, demo) */}
+          {project.secondaryLink && (() => {
+            const SIcon = project.secondaryLink.icon
+            return (
+              <a
+                href={project.secondaryLink.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-text-muted hover:text-pink-400 transition-colors group/sec"
+              >
+                <SIcon size={14} />
+                {project.secondaryLink.label}
+                <ExternalLink
+                  size={11}
+                  className="opacity-0 group-hover/sec:opacity-100 transition-opacity"
+                />
+              </a>
+            )
+          })()}
         </div>
       </div>
     </motion.article>
