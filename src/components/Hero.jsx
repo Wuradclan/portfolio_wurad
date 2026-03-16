@@ -251,9 +251,10 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             custom={0.15}
-            className="font-mono text-sm sm:text-base text-slate-400 tracking-widest mt-2 uppercase"
+            className="font-mono text-xs sm:text-sm text-slate-400 tracking-wider mt-2 uppercase"
           >
-            Mechanical Engineer &amp; Systems Architect
+            Lead Architect&nbsp;|&nbsp;Intelligent &amp; Secured Industrial Ecosystems&nbsp;
+            <span className="text-orange-DEFAULT/70">(AI&nbsp;•&nbsp;XR&nbsp;•&nbsp;IIoT)</span>
           </motion.p>
           {/* Typed rotator */}
           <motion.div
