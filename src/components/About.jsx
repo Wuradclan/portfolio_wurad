@@ -1,16 +1,31 @@
 import { motion } from 'framer-motion'
 import { Cpu, HardHat, Shield, GitBranch } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../contexts/LanguageContext'
 
-const pillars = [
-  { icon: HardHat,   label: '11 yrs',  sub: 'Heavy Industry Operations' },
-  { icon: Cpu,       label: 'Edge AI', sub: 'Spatial & Embedded Systems' },
-  { icon: Shield,    label: 'Cyber',   sub: 'IT/OT Security Architecture' },
-  { icon: GitBranch, label: 'M.Sc.',   sub: 'Software Engineering · UdeS' },
-]
+const statIcons = [HardHat, Cpu, Shield, GitBranch]
+
+/** Renders bio segments with inline colour highlights — no regex, fully typed */
+function BioText({ segments }) {
+  return (
+    <p className="text-base sm:text-lg text-text-secondary leading-relaxed">
+      {segments.map(({ text, type }, i) => {
+        if (type === 'primary') {
+          return <span key={i} className="text-text-primary font-semibold">{text}</span>
+        }
+        if (type === 'orange') {
+          return <span key={i} className="text-orange-DEFAULT font-medium">{text}</span>
+        }
+        return <span key={i}>{text}</span>
+      })}
+    </p>
+  )
+}
 
 export default function About() {
   const { ref, isVisible } = useScrollReveal(0.15)
+  const { tr }             = useLanguage()
+  const a                  = tr.about
 
   return (
     <section id="about" className="relative py-20 lg:py-28 overflow-hidden">
@@ -30,7 +45,7 @@ export default function About() {
           <div className="flex items-center gap-3 mb-8">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent to-orange-DEFAULT/40" />
             <h2 className="font-mono text-[11px] text-orange-DEFAULT tracking-widest uppercase">
-              About the Architect
+              {a.eyebrow}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-l from-transparent to-orange-DEFAULT/40" />
           </div>
@@ -42,10 +57,10 @@ export default function About() {
             <div className="absolute top-0 right-0 w-px h-24 bg-gradient-to-b from-orange-DEFAULT/40 to-transparent" />
             <div className="absolute top-0 right-0 w-24 h-px bg-gradient-to-l from-orange-DEFAULT/40 to-transparent" />
 
-            {/* Two-column layout: photo + text */}
+            {/* Two-column layout */}
             <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8 lg:gap-12 items-start mb-8">
 
-              {/* ── Monogram column ── */}
+              {/* ── Image column ── */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={isVisible ? { opacity: 1, x: 0 } : {}}
@@ -53,9 +68,7 @@ export default function About() {
                 className="flex flex-col items-center lg:items-start gap-3"
               >
                 <div className="relative">
-                  {/* Glow halo */}
                   <div className="absolute -inset-3 rounded-2xl bg-orange-DEFAULT/10 blur-2xl pointer-events-none" />
-                  {/* Profile image */}
                   <img
                     src="/assets/hero_banner.webp"
                     alt="Lead Architect Profile Cartoon"
@@ -63,54 +76,33 @@ export default function About() {
                     decoding="async"
                     className="relative w-44 h-44 lg:w-full lg:h-auto aspect-square object-cover rounded-2xl border border-white/10 shadow-xl"
                   />
-                  {/* Status pip */}
                   <span className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-[#0a0a0a]/80 backdrop-blur-sm border border-emerald-500/30 rounded-full px-2.5 py-1 text-[10px] font-mono text-emerald-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Available
+                    {a.available}
                   </span>
                 </div>
 
                 {/* Label plate */}
                 <div className="text-center lg:text-left">
-                  <p className="font-mono font-bold text-sm text-text-primary">Lead Architect</p>
+                  <p className="font-mono font-bold text-sm text-text-primary">{a.nameplate}</p>
                   <p className="font-mono text-[10px] text-text-muted mt-0.5">
-                    AI&nbsp;•&nbsp;XR&nbsp;•&nbsp;IIoT
+                    {a.subLabel}
                   </p>
                 </div>
               </motion.div>
 
-              {/* ── Text column ── */}
+              {/* ── Bio column ── */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={isVisible ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.22, ease: 'easeOut' }}
                 className="flex flex-col justify-center"
               >
-                <p className="text-base sm:text-lg text-text-secondary leading-relaxed">
-                  A{' '}
-                  <span className="text-text-primary font-semibold">Lead Architect</span>{' '}
-                  with a rare duality:{' '}
-                  <span className="text-orange-DEFAULT font-medium">11 years of operational grit</span>{' '}
-                  in heavy industry coupled with advanced research in{' '}
-                  <span className="text-text-primary font-medium">Software Engineering</span> and{' '}
-                  <span className="text-text-primary font-medium">Cybersecurity</span>.
-                  My expertise spans the entire stack — from simulating{' '}
-                  <span className="text-text-primary font-medium">mechanical gear constraints</span>{' '}
-                  in remote desert mining camps to architecting{' '}
-                  <span className="text-orange-DEFAULT font-medium">low-latency edge AI</span> and{' '}
-                  <span className="text-orange-DEFAULT font-medium">neuro-reactive VR interfaces</span>.
-                  I specialize in bridging the gap between the physical layer and the digital edge,
-                  ensuring that{' '}
-                  <span className="text-text-primary font-medium">high-availability systems</span>{' '}
-                  are as resilient in the field as they are secure in the cloud.
-                </p>
+                <BioText segments={a.bioSegments} />
 
-                {/* Inline highlight tags */}
+                {/* Skill tags */}
                 <div className="flex flex-wrap gap-2 mt-6">
-                  {[
-                    'Industrial Reliability', 'Edge AI', 'Spatial Computing',
-                    'Cybersecurity', 'VR/AR Development', 'Systems Architecture',
-                  ].map((tag) => (
+                  {a.tags.map((tag) => (
                     <span
                       key={tag}
                       className="font-mono text-[10px] text-text-muted border border-border rounded-full px-3 py-1 bg-surface/50"
@@ -127,21 +119,24 @@ export default function About() {
 
             {/* Stats row */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {pillars.map(({ icon: Icon, label, sub }, i) => (
-                <motion.div
-                  key={label}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.45, delay: 0.35 + i * 0.08, ease: 'easeOut' }}
-                  className="group flex flex-col items-center text-center gap-2 p-4 rounded-xl border border-border hover:border-orange-DEFAULT/30 bg-surface/50 hover:bg-orange-DEFAULT/5 transition-all duration-300"
-                >
-                  <div className="p-2 rounded-lg bg-orange-DEFAULT/10 border border-orange-DEFAULT/20 group-hover:bg-orange-DEFAULT/15 transition-colors">
-                    <Icon size={15} className="text-orange-DEFAULT" />
-                  </div>
-                  <span className="font-mono font-bold text-sm text-text-primary">{label}</span>
-                  <span className="font-mono text-[10px] text-text-muted leading-tight">{sub}</span>
-                </motion.div>
-              ))}
+              {a.stats.map(({ label, sub }, i) => {
+                const Icon = statIcons[i]
+                return (
+                  <motion.div
+                    key={label}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.45, delay: 0.35 + i * 0.08, ease: 'easeOut' }}
+                    className="group flex flex-col items-center text-center gap-2 p-4 rounded-xl border border-border hover:border-orange-DEFAULT/30 bg-surface/50 hover:bg-orange-DEFAULT/5 transition-all duration-300"
+                  >
+                    <div className="p-2 rounded-lg bg-orange-DEFAULT/10 border border-orange-DEFAULT/20 group-hover:bg-orange-DEFAULT/15 transition-colors">
+                      <Icon size={15} className="text-orange-DEFAULT" />
+                    </div>
+                    <span className="font-mono font-bold text-sm text-text-primary">{label}</span>
+                    <span className="font-mono text-[10px] text-text-muted leading-tight">{sub}</span>
+                  </motion.div>
+                )
+              })}
             </div>
           </div>
         </motion.div>

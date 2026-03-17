@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { HardHat, Code2, Brain, MapPin, Terminal, Radio } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -156,6 +157,8 @@ const phases = [
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
 function PhaseLabel({ phase, delay }) {
+  const { tr } = useLanguage()
+  const tp = tr.experience.phases[phase.id] || {}
   return (
     <motion.div
       initial={{ opacity: 0, x: -24 }}
@@ -165,8 +168,8 @@ function PhaseLabel({ phase, delay }) {
       className={`inline-flex items-center gap-2.5 mb-6 px-3 py-1.5 rounded-lg border ${phase.phaseTagClass} backdrop-blur-sm`}
     >
       <phase.Icon size={13} />
-      <span className="font-mono text-[11px] tracking-widest uppercase">{phase.phase}</span>
-      <span className="text-[11px] opacity-70">— {phase.label}</span>
+      <span className="font-mono text-[11px] tracking-widest uppercase">{tp.phase || phase.phase}</span>
+      <span className="text-[11px] opacity-70">— {tp.label || phase.label}</span>
     </motion.div>
   )
 }
@@ -193,6 +196,18 @@ function TimelineNode({ accentBg, accentGlow, index }) {
 }
 
 function RoleCard({ role, phase, cardIndex, globalIndex }) {
+  const { tr } = useLanguage()
+  // Per-role translation lookup (falls back to hardcoded data for safety)
+  const tRole = tr.experienceRoles?.[role.id] || {}
+  const title              = tRole.title              || role.title
+  const yoe                = tRole.yoe                ?? role.yoe
+  const operationalContext = tRole.operationalContext  ?? role.operationalContext
+  const impact             = tRole.impact?.length ? tRole.impact : role.impact
+  const mandateLabel       = tRole.mandateLabel       ?? role.engineeringMandate?.label
+  const mandateContext     = tRole.mandateContext      ?? role.engineeringMandate?.context
+  const mandateHighlights  = tRole.mandateHighlights?.length
+    ? tRole.mandateHighlights
+    : role.engineeringMandate?.highlights ?? []
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -225,7 +240,7 @@ function RoleCard({ role, phase, cardIndex, globalIndex }) {
               <div className="flex items-center gap-2 mb-2">
                 <Terminal size={10} className="text-orange-DEFAULT/60 shrink-0" />
                 <span className="font-mono text-[11px] text-orange-DEFAULT/70 tracking-widest">
-                  {role.periodRaw}
+                  {role.periodRaw.replace('PRESENT', tr.experience.present.toUpperCase())}
                 </span>
                 <span className="font-mono text-[10px] text-text-muted/50">·</span>
                 <MapPin size={9} className="text-text-muted/50 shrink-0" />
@@ -233,25 +248,25 @@ function RoleCard({ role, phase, cardIndex, globalIndex }) {
               </div>
 
               <h4 className="font-mono font-bold text-base sm:text-lg text-text-primary leading-snug">
-                {role.title}
+                {title}
               </h4>
               <p className={`font-semibold text-sm mt-0.5 ${phase.accentClass}`}>
                 {role.company}
               </p>
             </div>
 
-            {role.yoe && (
+            {yoe && (
               <span className="self-start shrink-0 px-2.5 py-1 rounded-full text-[10px] font-mono bg-orange-DEFAULT/10 text-orange-DEFAULT border border-orange-DEFAULT/25">
-                {role.yoe}
+                {yoe}
               </span>
             )}
           </div>
 
           {/* Operational context badge (amber — field/industrial) */}
-          {role.operationalContext && (
+          {operationalContext && (
             <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg border border-amber-400/25 bg-amber-400/8 w-fit">
               <span className="font-mono text-[11px] font-semibold text-amber-400 tracking-wide">
-                {role.operationalContext}
+                {operationalContext}
               </span>
             </div>
           )}
@@ -268,7 +283,7 @@ function RoleCard({ role, phase, cardIndex, globalIndex }) {
 
           {/* Impact bullets */}
           <ul className="flex flex-col gap-2 mb-4">
-            {role.impact.map((point, i) => (
+            {impact.map((point, i) => (
               <li key={i} className="flex items-start gap-2.5">
                 <span className="mt-[7px] shrink-0 w-1 h-1 rounded-full bg-orange-DEFAULT/60" />
                 <span className="text-sm text-text-secondary leading-relaxed">{point}</span>
@@ -282,16 +297,16 @@ function RoleCard({ role, phase, cardIndex, globalIndex }) {
               {/* Mandate header */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-1 px-3.5 py-2.5 border-b border-amber-400/15">
                 <span className="font-mono text-[11px] font-bold text-amber-400 tracking-wide">
-                  ⚙ {role.engineeringMandate.label}
+                  ⚙ {mandateLabel}
                 </span>
                 <span className="hidden sm:block text-amber-400/30 text-[10px] mx-1">·</span>
                 <span className="font-mono text-[10px] text-amber-400/50 italic">
-                  {role.engineeringMandate.context}
+                  {mandateContext}
                 </span>
               </div>
               {/* Mandate bullets */}
               <ul className="flex flex-col gap-2.5 p-3.5">
-                {role.engineeringMandate.highlights.map((point, i) => (
+                {mandateHighlights.map((point, i) => (
                   <li key={i} className="flex items-start gap-2.5">
                     <span className="mt-[7px] shrink-0 w-1 h-1 rounded-full bg-amber-400/50" />
                     <span className="text-xs text-text-secondary leading-relaxed">{point}</span>
@@ -322,6 +337,7 @@ function RoleCard({ role, phase, cardIndex, globalIndex }) {
 
 export default function ExperienceTimeline() {
   const containerRef = useRef(null)
+  const { tr } = useLanguage()
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -354,15 +370,13 @@ export default function ExperienceTimeline() {
           className="mb-20 text-center"
         >
           <span className="font-mono text-xs text-orange-DEFAULT tracking-widest uppercase">
-            Career Trajectory
+            {tr.experience.eyebrow}
           </span>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl lg:text-5xl text-gradient-white mt-4 mb-6">
-            Professional Experience
+            {tr.experience.heading}
           </h2>
           <p className="text-text-secondary max-w-xl mx-auto">
-            From 11 years forging operational resilience in heavy industry to
-            architecting intelligent cyber-physical systems and conducting graduate-level
-            research in Canada — a deliberate, compounding evolution.
+            {tr.experience.subheading}
           </p>
         </motion.div>
 
@@ -425,13 +439,16 @@ export default function ExperienceTimeline() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-wrap justify-center gap-6 mt-16 pt-8 border-t border-border"
         >
-          {phases.map((phase) => (
-            <div key={phase.id} className="flex items-center gap-2 text-xs text-text-muted">
-              <div className={`w-2 h-2 rounded-full ${phase.accentBg}`} />
-              <span className={`font-mono ${phase.accentClass}`}>{phase.phase}</span>
-              <span>— {phase.label}</span>
-            </div>
-          ))}
+          {phases.map((phase) => {
+            const tp = tr.experience.phases[phase.id] || {}
+            return (
+              <div key={phase.id} className="flex items-center gap-2 text-xs text-text-muted">
+                <div className={`w-2 h-2 rounded-full ${phase.accentBg}`} />
+                <span className={`font-mono ${phase.accentClass}`}>{tp.phase || phase.phase}</span>
+                <span>— {tp.label || phase.label}</span>
+              </div>
+            )
+          })}
         </motion.div>
       </div>
     </section>

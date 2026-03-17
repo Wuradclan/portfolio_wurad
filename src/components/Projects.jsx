@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ExternalLink, Lock, Brain, Wrench, Activity, Code2, GitBranch, HardHat, Cpu, Radio, ChevronRight, CircuitBoard, Globe, Instagram, Store, Glasses } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const projects = [
   {
@@ -311,8 +312,18 @@ function PipelineDiagram({ stages }) {
 
 function ProjectCard({ project, index }) {
   const { ref, isVisible } = useScrollReveal()
+  const { tr } = useLanguage()
+  const tp = tr.projects
+  const tItem = tr.projectItems?.[project.id] || {}
   const Icon = project.icon
-  const isHardware = project.status === 'hardware'
+  const isHardware   = project.status === 'hardware'
+  const description  = tp.descriptions?.[project.id]  || project.description
+  const statusLabel  = tp.statusLabels?.[project.id]  || project.statusLabel
+  const subtitle     = tItem.subtitle                  || project.subtitle
+  const linkLabel    = tItem.linkLabel                 || project.linkLabel
+  const tag          = tItem.tag                       || project.tag
+  const highlights   = tItem.highlights                || project.highlights
+  const stealthBadge = project.stealthBadge ? tp.confidentialBadge : null
 
   return (
     <motion.article
@@ -363,7 +374,7 @@ function ProjectCard({ project, index }) {
               <h3 className="font-mono font-bold text-lg text-text-primary">
                 {project.title}
               </h3>
-              <p className="text-xs text-text-muted mt-0.5">{project.subtitle}</p>
+              <p className="text-xs text-text-muted mt-0.5">{subtitle}</p>
             </div>
           </div>
           <span
@@ -371,7 +382,7 @@ function ProjectCard({ project, index }) {
               statusStyles[project.status]
             }`}
           >
-            {project.statusLabel}
+            {statusLabel}
           </span>
         </div>
 
@@ -386,12 +397,12 @@ function ProjectCard({ project, index }) {
               isHardware ? 'text-violet-400' : 'text-orange-DEFAULT'
             }`}
           >
-            {project.tag}
+            {tag}
           </span>
         </div>
 
         {/* Stealth badge — rendered for pre-patent / confidential projects */}
-        {project.stealthBadge && (
+        {stealthBadge && (
           <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border border-red-500/30 bg-red-500/5 w-fit">
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-60" />
@@ -399,13 +410,13 @@ function ProjectCard({ project, index }) {
             </span>
             <Lock size={10} className="text-red-400/80 shrink-0" />
             <span className="font-mono text-[10px] font-bold text-red-400 tracking-[0.15em] uppercase">
-              {project.stealthBadge}
+              {stealthBadge}
             </span>
           </div>
         )}
 
         {/* Description */}
-        <p className="text-sm text-text-secondary leading-relaxed">{project.description}</p>
+        <p className="text-sm text-text-secondary leading-relaxed">{description}</p>
 
         {/* Single featured image (non-BCI cards) */}
         {project.image && !project.architectureDiagram && (
@@ -623,7 +634,7 @@ function ProjectCard({ project, index }) {
 
         {/* Highlights */}
         <ul className="grid grid-cols-1 gap-1.5">
-          {project.highlights.map((h) => (
+          {highlights.map((h) => (
             <li key={h} className="flex items-start gap-2 text-xs text-text-secondary">
               <span
                 className={`mt-1.5 shrink-0 w-1 h-1 rounded-full ${
@@ -661,7 +672,7 @@ function ProjectCard({ project, index }) {
               className="inline-flex items-center gap-2 text-sm font-semibold text-orange-DEFAULT hover:text-orange-dim transition-colors group/link"
             >
               <project.linkIcon size={14} />
-              {project.linkLabel}
+              {linkLabel}
               <ExternalLink
                 size={11}
                 className="opacity-0 group-hover/link:opacity-100 transition-opacity"
@@ -670,7 +681,7 @@ function ProjectCard({ project, index }) {
           ) : (
             <span className="inline-flex items-center gap-2 text-sm font-semibold text-text-muted cursor-default">
               <project.linkIcon size={14} />
-              {project.linkLabel}
+              {linkLabel}
             </span>
           )}
 
@@ -701,6 +712,7 @@ function ProjectCard({ project, index }) {
 
 export default function Projects() {
   const { ref: headRef, isVisible: headVisible } = useScrollReveal()
+  const { tr } = useLanguage()
 
   return (
     <section id="projects" className="relative py-24 lg:py-32">
@@ -714,15 +726,13 @@ export default function Projects() {
           className="mb-16 text-center"
         >
           <span className="font-mono text-xs text-orange-DEFAULT tracking-widest uppercase">
-            Portfolio
+            {tr.projects.eyebrow}
           </span>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl lg:text-5xl text-gradient-white mt-4 mb-6">
-            Stealth & Featured Projects
+            {tr.projects.heading}
           </h2>
           <p className="max-w-2xl mx-auto text-text-secondary">
-            From proprietary industrial AI under NDA to open-source monorepos — a
-            portfolio built at the intersection of field operations and software
-            engineering.
+            {tr.experience.subheading}
           </p>
         </motion.div>
 

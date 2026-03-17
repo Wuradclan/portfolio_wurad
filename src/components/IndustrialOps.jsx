@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { HardHat, Activity, Database, Shield, Wrench, Award, ChevronRight } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../contexts/LanguageContext'
 
 // ─── Highlight cards ──────────────────────────────────────────────────────────
 
@@ -57,6 +58,8 @@ const certs = [
 
 function HighlightCard({ item, index }) {
   const { ref, isVisible } = useScrollReveal(0.1)
+  const { tr } = useLanguage()
+  const th = tr.industrialOps.highlights[item.id] || {}
   const Icon = item.icon
 
   return (
@@ -80,14 +83,14 @@ function HighlightCard({ item, index }) {
           </div>
           <div>
             <h4 className="font-mono font-bold text-sm text-text-primary leading-snug">
-              {item.title}
+              {th.title || item.title}
             </h4>
-            <p className="text-[11px] text-amber-400/70 font-mono mt-0.5">{item.label}</p>
+            <p className="text-[11px] text-amber-400/70 font-mono mt-0.5">{th.label || item.label}</p>
           </div>
         </div>
 
         {/* Body */}
-        <p className="text-sm text-text-secondary leading-relaxed">{item.body}</p>
+        <p className="text-sm text-text-secondary leading-relaxed">{th.body || item.body}</p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-1.5 pt-3 border-t border-amber-500/10">
@@ -124,6 +127,7 @@ function CertBadge({ cert }) {
 
 export default function IndustrialOps() {
   const { ref: headRef, isVisible: headVisible } = useScrollReveal()
+  const { tr } = useLanguage()
 
   // Duplicate certs for seamless marquee loop
   const marqueeItems = [...certs, ...certs]
@@ -153,21 +157,16 @@ export default function IndustrialOps() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-400/25 bg-amber-400/8 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.8)]" />
             <span className="font-mono text-[11px] text-amber-400 tracking-widest uppercase">
-              Global Tier-1 Mining Corporation · North Africa · 2006 – 2017
+              {tr.industrialOps.eyebrowEmployer}
             </span>
           </div>
 
           <h2 className="font-mono font-bold text-3xl sm:text-4xl lg:text-5xl text-gradient-white mb-6">
-            Industrial Operations &<br className="hidden sm:block" /> Maintenance Architecture
+            {tr.industrialOps.heading}
           </h2>
 
           <p className="max-w-2xl mx-auto text-text-secondary">
-            Supervised mechanical engineering projects and technical design using{' '}
-            <span className="text-text-primary font-medium">SolidWorks</span> and{' '}
-            <span className="text-text-primary font-medium">AutoCAD</span> within the global
-            mining sector. Implemented digital tools to optimize industrial maintenance
-            workflows, focusing on equipment availability and{' '}
-            <span className="text-amber-400 font-medium">MTTR / MTBF</span> metrics.
+            {tr.industrialOps.subheading}
           </p>
         </motion.div>
 
@@ -178,12 +177,7 @@ export default function IndustrialOps() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-14"
         >
-          {[
-            { value: '11 yrs', label: 'Field Operations' },
-            { value: 'Tier-1', label: 'Global Mining Corporation' },
-            { value: 'CAPM®', label: 'PMI Certified' },
-            { value: 'DuPont', label: 'HSE Methodology' },
-          ].map(({ value, label }) => (
+          {tr.industrialOps.kpi.map(({ value, label }) => (
             <div
               key={label}
               className="rounded-lg border border-amber-500/15 bg-amber-400/5 p-4 text-center"
@@ -213,7 +207,7 @@ export default function IndustrialOps() {
             <div className="flex items-center gap-2">
               <Award size={14} className="text-amber-400" />
               <span className="font-mono text-xs text-amber-400 tracking-widest uppercase">
-                Certifications
+                {tr.industrialOps.certsHeading}
               </span>
             </div>
             <div className="flex-1 h-px bg-gradient-to-l from-amber-400/30 to-transparent" />

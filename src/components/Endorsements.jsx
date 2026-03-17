@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Quote, Linkedin } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../contexts/LanguageContext'
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -44,6 +45,7 @@ const endorsements = [
 
 function EndorsementCard({ item, index }) {
   const { ref, isVisible } = useScrollReveal(0.1)
+  const { tr } = useLanguage()
 
   return (
     <motion.div
@@ -70,7 +72,7 @@ function EndorsementCard({ item, index }) {
       <div className="relative z-10">
         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase border border-orange-DEFAULT/20 bg-orange-DEFAULT/8 text-orange-DEFAULT/70">
           <span className="w-1 h-1 rounded-full bg-orange-DEFAULT/60" />
-          {item.category}
+          {tr.endorsements.categories[item.id] || item.category}
         </span>
       </div>
 
@@ -144,6 +146,7 @@ function EndorsementCard({ item, index }) {
 
 export default function Endorsements() {
   const { ref: headRef, isVisible: headVisible } = useScrollReveal()
+  const { tr } = useLanguage()
 
   return (
     <section id="endorsements" className="relative py-24 lg:py-32 overflow-hidden">
@@ -162,15 +165,13 @@ export default function Endorsements() {
           className="mb-16 text-center"
         >
           <span className="font-mono text-xs text-orange-DEFAULT tracking-widest uppercase">
-            Verified by Peers
+            {tr.endorsements.eyebrow}
           </span>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl lg:text-5xl text-gradient-white mt-4 mb-6">
-            Professional Endorsements
+            {tr.endorsements.heading}
           </h2>
           <p className="max-w-2xl mx-auto text-text-secondary">
-            Assessments from executives, field consultants, and professors who have
-            observed the work first-hand — across safety engineering, industrial
-            operations, and academic performance.
+            {tr.academic.subheading}
           </p>
         </motion.div>
 
@@ -188,7 +189,7 @@ export default function Endorsements() {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="text-center text-[11px] text-text-muted font-mono mt-10"
         >
-          All endorsements sourced from LinkedIn · Names and titles reproduced with permission
+          {tr.endorsements.sourceNote}
         </motion.p>
       </div>
     </section>

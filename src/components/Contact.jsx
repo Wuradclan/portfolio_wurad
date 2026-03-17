@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { MapPin, Mail, Linkedin, Github, Gitlab, ArrowUpRight, Zap } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const socials = [
   {
@@ -34,8 +35,11 @@ const locations = [
   { city: 'North Africa', region: 'Remote-Friendly', flag: '🌍', primary: false },
 ]
 
+const socialIds = ['linkedin', 'github', 'gitlab', 'email']
+
 export default function Contact() {
   const { ref, isVisible } = useScrollReveal()
+  const { tr } = useLanguage()
 
   return (
     <section id="contact" className="relative py-24 lg:py-32 overflow-hidden">
@@ -52,14 +56,13 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <span className="font-mono text-xs text-orange-DEFAULT tracking-widest uppercase">
-            Let's Work Together
+            {tr.contact.eyebrow}
           </span>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl lg:text-5xl text-gradient-white mt-4 mb-6">
-            Open to the Right Opportunity
+            {tr.contact.heading}
           </h2>
           <p className="max-w-xl mx-auto text-text-secondary">
-            Whether it's a senior engineering role, research collaboration, or a stealth
-            project that needs a systems mind — let's talk.
+            {tr.contact.subheading}
           </p>
         </motion.div>
 
@@ -77,10 +80,7 @@ export default function Contact() {
               <Zap size={24} className="text-orange-DEFAULT" fill="currentColor" />
             </div>
             <p className="text-text-secondary mb-8 max-w-md mx-auto">
-              Currently seeking senior roles in{' '}
-              <span className="text-text-primary font-medium">Systems Architecture</span>,{' '}
-              <span className="text-text-primary font-medium">Industrial AI</span>, and{' '}
-              <span className="text-text-primary font-medium">Cyber-Physical Security</span>.
+              {tr.contact.ctaBody}
             </p>
             <a
               href="mailto:wurad.ait@gmail.com"
@@ -88,7 +88,7 @@ export default function Contact() {
               className="inline-flex items-center gap-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 shadow-orange-glow"
             >
               <Mail size={16} />
-              Get in Touch
+              {tr.contact.ctaButton}
               <ArrowUpRight size={14} />
             </a>
           </div>
@@ -101,7 +101,7 @@ export default function Contact() {
           transition={{ duration: 0.6, delay: 0.25 }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12"
         >
-          {socials.map(({ icon: Icon, label, href, desc }) => (
+          {socials.map(({ icon: Icon, label, href }, si) => (
             <a
               key={label}
               href={href}
@@ -116,7 +116,9 @@ export default function Contact() {
               <span className="text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors">
                 {label}
               </span>
-              <span className="text-[11px] text-text-muted">{desc}</span>
+              <span className="text-[11px] text-text-muted">
+                {tr.contact.socialDescs[socialIds[si]] || label}
+              </span>
             </a>
           ))}
         </motion.div>
@@ -128,36 +130,40 @@ export default function Contact() {
           transition={{ duration: 0.6, delay: 0.35 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          {locations.map(({ city, region, flag, primary }) => (
-            <div
-              key={city}
-              className={`flex items-center gap-3 px-6 py-3.5 rounded-xl border ${
-                primary
-                  ? 'border-orange-DEFAULT/30 bg-orange-glow'
-                  : 'border-border bg-card'
-              }`}
-            >
-              <MapPin
-                size={14}
-                className={primary ? 'text-orange-DEFAULT' : 'text-text-muted'}
-              />
-              <div>
-                <div
-                  className={`font-mono font-semibold text-sm ${
-                    primary ? 'text-text-primary' : 'text-text-secondary'
-                  }`}
-                >
-                  {flag} {city}
+          {locations.map(({ city, region: _region, flag, primary }, li) => {
+            const locKey = li === 0 ? 'canada' : 'northAfrica'
+            const region = tr.contact.locations[locKey]?.region ?? _region
+            return (
+              <div
+                key={city}
+                className={`flex items-center gap-3 px-6 py-3.5 rounded-xl border ${
+                  primary
+                    ? 'border-orange-DEFAULT/30 bg-orange-glow'
+                    : 'border-border bg-card'
+                }`}
+              >
+                <MapPin
+                  size={14}
+                  className={primary ? 'text-orange-DEFAULT' : 'text-text-muted'}
+                />
+                <div>
+                  <div
+                    className={`font-mono font-semibold text-sm ${
+                      primary ? 'text-text-primary' : 'text-text-secondary'
+                    }`}
+                  >
+                    {flag} {city}
+                  </div>
+                  <div className="text-[11px] text-text-muted">{region}</div>
                 </div>
-                <div className="text-[11px] text-text-muted">{region}</div>
+                {primary && (
+                  <span className="ml-2 px-2 py-0.5 rounded-full text-[10px] font-mono bg-orange-DEFAULT text-background font-semibold">
+                    {tr.contact.primary}
+                  </span>
+                )}
               </div>
-              {primary && (
-                <span className="ml-2 px-2 py-0.5 rounded-full text-[10px] font-mono bg-orange-DEFAULT text-background font-semibold">
-                  Primary
-                </span>
-              )}
-            </div>
-          ))}
+            )
+          })}
         </motion.div>
       </div>
 
@@ -175,7 +181,7 @@ export default function Contact() {
           Framer Motion
         </p>
         <p className="text-[11px] text-text-muted/60 mt-1">
-          Systems Architect & Industrial AI Specialist · Canada · Open to Remote Roles
+          {tr.contact.footer}
         </p>
       </div>
     </section>

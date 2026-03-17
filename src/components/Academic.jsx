@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { GraduationCap, Award, BookOpen, Cpu, Globe, Shield, Wrench, Layers } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const timeline = [
   {
@@ -8,12 +9,12 @@ const timeline = [
     year: 'Autumn 2026',
     type: 'Graduate — M.Sc.',
     icon: GraduationCap,
-    degree: 'M.Sc. Software Engineering',
+    degree: 'M.Sc. Software Engineering (Course-based with Internship)',
     institution: 'Université de Sherbrooke',
     location: 'Sherbrooke, QC',
     status: 'Starting Autumn 2026',
     statusStyle: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-    highlight: 'Research focus: AI systems for industrial safety & reliability',
+    highlight: 'Professional M.Sc. emphasizing software architecture, systems design, and applied engineering — completed with an integrated industry internship.',
     courses: [],
     note: null,
   },
@@ -34,20 +35,20 @@ const timeline = [
   {
     id: 'mcgill',
     year: 'Completed Jun 2024',
-    type: 'Graduate Certificate',
+    type: 'Undergraduate Certificate',
     icon: Shield,
-    degree: 'Graduate Certificate in Applied Cybersecurity',
+    degree: 'Undergraduate Certificate in Applied Cybersecurity',
     institution: 'McGill University',
     location: 'Montréal, QC',
     status: 'GPA 4.0 (Core Modules)',
     statusStyle: 'bg-orange-DEFAULT/10 text-orange-DEFAULT border-orange-DEFAULT/30',
-    highlight: 'Graduate-level specialization focused on defending converged IT/OT environments, featuring 4.0 performance in core architectural and risk management modules.',
+    highlight: 'Undergraduate-level specialization focused on defending converged IT/OT environments, featuring 4.0 performance in core architectural and risk management modules.',
     courses: ['Security Architecture & Design (A)', 'Security Risk Management (A)', 'Cryptography & Network Security'],
     note: null,
   },
   {
     id: 'dess',
-    year: '2022 → 2024',
+    year: 'Sept 2018 – Dec 2019',
     type: 'Graduate Certificate — D.E.S.S.',
     icon: BookOpen,
     degree: 'D.E.S.S. — Information Technology',
@@ -117,9 +118,31 @@ const timeline = [
   },
 ]
 
+const statusI18n = {
+  'In Progress':          { en: 'In Progress',          fr: 'En cours' },
+  'Starting Autumn 2026': { en: 'Starting Autumn 2026', fr: 'Démarrage Automne 2026' },
+  'Completed':            { en: 'Completed',             fr: 'Terminé' },
+  'DEC Equivalent (QC)':  { en: 'DEC Equivalent (QC)',   fr: 'Équivalent DEC (QC)' },
+  'Undergraduate Certificate': { en: 'Undergraduate Certificate', fr: 'Certificat de premier cycle' },
+  'GPA 4.0 (Core Modules)': { en: 'GPA 4.0 (Core Modules)', fr: 'GPA 4,0 (Modules Clés)' },
+  'GPA 3.84 / 4.00':      { en: 'GPA 3.84 / 4.00',      fr: 'GPA 3,84 / 4,00' },
+  'Graduated with Distinction': { en: 'Graduated with Distinction', fr: 'Diplômé avec Mention' },
+}
+
 function TimelineItem({ item, index, total }) {
   const { ref, isVisible } = useScrollReveal()
+  const { lang, tr } = useLanguage()
   const Icon = item.icon
+  const statusText = statusI18n[item.status]?.[lang] ?? item.status
+  // Per-item translation lookups — all visible fields
+  const tAcad    = tr.academicItems?.[item.id] || {}
+  const typeText  = tAcad.type      || item.type
+  const degreeText = tAcad.degree   || item.degree
+  const yearLabel  = tAcad.yearLabel || item.year
+  const location   = tAcad.location  || item.location
+  const highlight  = tAcad.highlight || item.highlight
+  const courses    = (tAcad.courses?.length ? tAcad.courses : null) ?? item.courses
+  const note       = tAcad.note      ?? item.note
 
   return (
     <motion.div
@@ -149,31 +172,31 @@ function TimelineItem({ item, index, total }) {
             <div>
               <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
                 <span className="font-mono text-[10px] text-text-muted tracking-widest uppercase">
-                  {item.type}
+                  {typeText}
                 </span>
                 <span className="text-text-muted/30">·</span>
-                <span className="font-mono text-[10px] text-text-muted">{item.year}</span>
+                <span className="font-mono text-[10px] text-text-muted">{yearLabel}</span>
               </div>
-              <h3 className="font-mono font-bold text-base text-text-primary">{item.degree}</h3>
+              <h3 className="font-mono font-bold text-base text-text-primary">{degreeText}</h3>
               <p className="text-sm text-text-secondary mt-0.5">
                 {item.institution}
-                <span className="text-text-muted"> · {item.location}</span>
+                <span className="text-text-muted"> · {location}</span>
               </p>
             </div>
             <span
               className={`self-start shrink-0 px-2.5 py-1 rounded-full text-[10px] font-mono border whitespace-nowrap ${item.statusStyle}`}
             >
-              {item.status}
+              {statusText}
             </span>
           </div>
 
           {/* Highlight */}
-          <p className="text-xs text-orange-DEFAULT/70 font-medium mb-2">{item.highlight}</p>
+          <p className="text-xs text-orange-DEFAULT/70 font-medium mb-2">{highlight}</p>
 
           {/* Courses */}
-          {item.courses.length > 0 && (
+          {courses.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-2">
-              {item.courses.map((c) => (
+              {courses.map((c) => (
                 <span
                   key={c}
                   className="px-2 py-0.5 rounded text-[10px] font-mono text-text-muted bg-surface border border-border"
@@ -185,9 +208,9 @@ function TimelineItem({ item, index, total }) {
           )}
 
           {/* Note */}
-          {item.note && (
+          {note && (
             <p className="text-xs text-text-muted border-l-2 border-orange-DEFAULT/40 pl-3 mt-2 leading-relaxed">
-              {item.note}
+              {note}
             </p>
           )}
         </div>
@@ -198,6 +221,7 @@ function TimelineItem({ item, index, total }) {
 
 export default function Academic() {
   const { ref: headRef, isVisible: headVisible } = useScrollReveal()
+  const { tr } = useLanguage()
 
   return (
     <section id="academic" className="relative py-24 lg:py-32">
@@ -213,15 +237,13 @@ export default function Academic() {
           className="mb-16 text-center"
         >
           <span className="font-mono text-xs text-orange-DEFAULT tracking-widest uppercase">
-            Credentials
+            {tr.academic.eyebrow}
           </span>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl lg:text-5xl text-gradient-white mt-4 mb-6">
-            Academic Excellence
+            {tr.academic.heading}
           </h2>
           <p className="text-text-secondary">
-            A deliberate, cross-disciplinary academic path — from applied mechanics in
-            Morocco through AI, IoT, and cybersecurity to graduate-level software
-            engineering in Canada.
+            {tr.academic.subheading}
           </p>
         </motion.div>
 

@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react'
+import { LanguageProvider } from './contexts/LanguageContext'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -12,6 +13,7 @@ import Contact from './components/Contact'
 
 export default function App() {
   return (
+    <LanguageProvider>
     <>
       <div className="min-h-screen bg-background text-text-primary overflow-x-hidden">
         <Navbar />
@@ -29,5 +31,6 @@ export default function App() {
       </div>
       <Analytics />
     </>
+    </LanguageProvider>
   )
 }

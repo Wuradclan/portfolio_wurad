@@ -1,6 +1,16 @@
 import { motion } from 'framer-motion'
 import { HardHat, Shield, Brain, Activity, Cpu, Lock, LayoutTemplate, CheckCircle2 } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../contexts/LanguageContext'
+
+const pillarIcons = { reliability: HardHat, security: Shield, intelligence: Brain }
+const skillIcons  = {
+  reliability:  [Activity, HardHat, Cpu],
+  security:     [Shield, Lock, Cpu],
+  intelligence: [Cpu, Activity, Brain, LayoutTemplate],
+}
+
+const pillarIds = ['reliability', 'security', 'intelligence']
 
 const pillars = [
   {
@@ -57,7 +67,9 @@ const pillars = [
 
 function PillarCard({ pillar, index }) {
   const { ref, isVisible } = useScrollReveal()
-  const Icon = pillar.icon
+  const { tr } = useLanguage()
+  const tp = tr.pillars.items[pillar.id] || {}
+  const Icon = pillarIcons[pillar.id] || pillar.icon
 
   return (
     <motion.div
@@ -78,7 +90,7 @@ function PillarCard({ pillar, index }) {
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-3">
             <span className="font-mono text-xs text-orange-DEFAULT tracking-widest uppercase">
-              {pillar.tag}
+              {tp.tag || pillar.tag}
             </span>
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-lg bg-orange-glow border border-orange-DEFAULT/20">
@@ -86,52 +98,55 @@ function PillarCard({ pillar, index }) {
               </div>
               <div>
                 <h3 className="font-mono font-bold text-xl text-text-primary">
-                  {pillar.title}
+                  {tp.title || pillar.title}
                 </h3>
-                <p className="text-xs text-text-muted mt-0.5">{pillar.subtitle}</p>
+                <p className="text-xs text-text-muted mt-0.5">{tp.subtitle || pillar.subtitle}</p>
               </div>
             </div>
           </div>
           {/* Stat badge */}
           <div className="text-right shrink-0 ml-4">
             <div className="font-mono font-bold text-2xl text-gradient-orange">
-              {pillar.stat.value}
+              {(tp.stat || pillar.stat).value}
             </div>
             <div className="text-[10px] text-text-muted max-w-[80px] text-right">
-              {pillar.stat.label}
+              {(tp.stat || pillar.stat).label}
             </div>
           </div>
         </div>
 
         {/* Description */}
-        <p className="text-sm text-text-secondary leading-relaxed">{pillar.description}</p>
+        <p className="text-sm text-text-secondary leading-relaxed">{tp.description || pillar.description}</p>
 
         {/* Skills list */}
         <ul className="flex flex-col gap-3 mt-auto">
-          {pillar.skills.map(({ icon: SIcon, label, desc }) => (
-            <li key={label} className="flex items-start gap-3">
-              <div className="mt-0.5 shrink-0">
-                <SIcon size={14} className="text-orange-DEFAULT" />
-              </div>
-              <div>
-                <span className="text-sm font-medium text-text-primary">{label}</span>
-                <p className="text-xs text-text-muted mt-0.5">{desc}</p>
-              </div>
-            </li>
-          ))}
+          {(tp.skills || pillar.skills).map(({ label, desc }, si) => {
+            const SIcon = (skillIcons[pillar.id] || [])[si] || Cpu
+            return (
+              <li key={label} className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0">
+                  <SIcon size={14} className="text-orange-DEFAULT" />
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-text-primary">{label}</span>
+                  <p className="text-xs text-text-muted mt-0.5">{desc}</p>
+                </div>
+              </li>
+            )
+          })}
         </ul>
 
         {/* Canadian site-ready credential badge */}
-        {pillar.siteReady && (
+        {(tp.siteReady || pillar.siteReady) && (
           <div className="flex items-center gap-2.5 mt-4 px-3 py-2.5 rounded-lg border border-amber-400/25 bg-amber-400/5 w-fit">
             <CheckCircle2 size={12} className="text-amber-400 shrink-0" />
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="font-mono text-[10px] font-semibold text-amber-400 tracking-wide">
-                {pillar.siteReady.label}
+                {(tp.siteReady || pillar.siteReady).label}
               </span>
               <span className="font-mono text-[9px] text-amber-400/40">·</span>
               <span className="font-mono text-[10px] text-amber-400/70">
-                {pillar.siteReady.certs}
+                {(tp.siteReady || pillar.siteReady).certs}
               </span>
             </div>
           </div>
@@ -143,6 +158,7 @@ function PillarCard({ pillar, index }) {
 
 export default function Pillars() {
   const { ref: headRef, isVisible: headVisible } = useScrollReveal()
+  const { tr } = useLanguage()
 
   return (
     <section id="pillars" className="relative py-24 lg:py-32">
@@ -158,14 +174,13 @@ export default function Pillars() {
           className="mb-16 text-center"
         >
           <span className="font-mono text-xs text-orange-DEFAULT tracking-widest uppercase">
-            Core Competencies
+            {tr.pillars.eyebrow}
           </span>
           <h2 className="font-mono font-bold text-3xl sm:text-4xl lg:text-5xl text-gradient-white mt-4 mb-6">
-            The Three Pillars
+            {tr.pillars.heading}
           </h2>
           <p className="max-w-2xl mx-auto text-text-secondary">
-            A rare convergence of industrial operations experience, cybersecurity
-            architecture, and AI/XR development — all within a single systems mindset.
+            {tr.pillars.subheading}
           </p>
         </motion.div>
 

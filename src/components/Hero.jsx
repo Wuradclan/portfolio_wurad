@@ -1,23 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, GraduationCap, Shield, ChevronDown } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
-const TYPED_STRINGS = [
-  'Systems Architect',
-  'Industrial AI Specialist',
-  'XR Architect',
-  'Cyber-Physical Security',
-  'Reliability Engineer',
-]
-
-function useTypingEffect(strings, speed = 80, pause = 2000) {
-  const [display, setDisplay] = useState('')
-  const [strIdx, setStrIdx] = useState(0)
-  const [charIdx, setCharIdx] = useState(0)
+/** Typed rotator — resets cleanly when `resetKey` changes (language switch) */
+function useTypingEffect(strings, resetKey, speed = 80, pause = 2000) {
+  const [display,  setDisplay]  = useState('')
+  const [strIdx,   setStrIdx]   = useState(0)
+  const [charIdx,  setCharIdx]  = useState(0)
   const [deleting, setDeleting] = useState(false)
+
+  // Hard-reset when language toggles
+  useEffect(() => {
+    setDisplay('')
+    setStrIdx(0)
+    setCharIdx(0)
+    setDeleting(false)
+  }, [resetKey])
 
   useEffect(() => {
     const current = strings[strIdx]
+    if (!current) return
     let timeout
 
     if (!deleting && charIdx < current.length) {
@@ -47,14 +50,12 @@ const fadeUp = {
   }),
 }
 
-const badges = [
-  { icon: MapPin, label: 'Canada · Open to Remote Roles' },
-  { icon: GraduationCap, label: 'M.Sc. Software Engineering · UdeS' },
-  { icon: Shield, label: 'McGill Applied Cybersecurity' },
-]
-
 export default function Hero() {
-  const typed = useTypingEffect(TYPED_STRINGS)
+  const { lang, tr }   = useLanguage()
+  const h              = tr.hero
+  const typed          = useTypingEffect(h.typedStrings, lang)
+  const badgeIcons     = [MapPin, GraduationCap, Shield]
+  const badgeLabels    = [h.badges.location, h.badges.degree, h.badges.security]
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -152,6 +153,7 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+
         {/* Status chips row */}
         <motion.div
           variants={fadeUp}
@@ -253,8 +255,8 @@ export default function Hero() {
             custom={0.15}
             className="font-mono text-xs sm:text-sm text-slate-400 tracking-wider mt-2 uppercase"
           >
-            Lead Architect&nbsp;|&nbsp;Intelligent &amp; Secured Industrial Ecosystems&nbsp;
-            <span className="text-orange-DEFAULT/70">(AI&nbsp;•&nbsp;XR&nbsp;•&nbsp;IIoT)</span>
+            {h.identityTag}&nbsp;
+            <span className="text-orange-DEFAULT/70">{h.identityTagSuffix}</span>
           </motion.p>
           {/* Typed rotator */}
           <motion.div
@@ -277,14 +279,16 @@ export default function Hero() {
           custom={0.35}
           className="max-w-2xl mx-auto text-base sm:text-lg text-text-secondary leading-relaxed mt-6 mb-5"
         >
-          Architecting at the intersection of{' '}
-          <span className="text-text-primary font-medium">Heavy Industry</span> and{' '}
-          <span className="text-text-primary font-medium">Intelligent Software</span>.
-          From ultra-class{' '}
-          <span className="text-text-primary font-medium">mechanical reliability</span>{' '}
-          to secure{' '}
-          <span className="text-orange-DEFAULT font-medium">edge AI</span> and{' '}
-          <span className="text-orange-DEFAULT font-medium">spatial computing</span>.
+          {h.headline.pre}{' '}
+          <span className="text-text-primary font-medium">{h.headline.h1}</span>{' '}
+          {h.headline.mid}{' '}
+          <span className="text-text-primary font-medium">{h.headline.h2}</span>
+          {h.headline.pre2}{' '}
+          <span className="text-text-primary font-medium">{h.headline.h3}</span>{' '}
+          {h.headline.mid2}{' '}
+          <span className="text-orange-DEFAULT font-medium">{h.headline.h4}</span>{' '}
+          {h.headline.mid3}{' '}
+          <span className="text-orange-DEFAULT font-medium">{h.headline.h5}</span>.
         </motion.p>
 
         {/* "Gears to Code" hook */}
@@ -297,10 +301,10 @@ export default function Hero() {
         >
           <div className="flex items-start gap-3 px-4 py-3 rounded-lg border-l-2 border-orange-DEFAULT/50 bg-orange-DEFAULT/5">
             <span className="font-mono text-xs sm:text-sm text-slate-400 leading-relaxed italic">
-              "A unique systems perspective that bridges the gap between{' '}
-              <span className="text-slate-300 not-italic font-medium">mechanical gear constraints</span>{' '}
-              and{' '}
-              <span className="text-slate-300 not-italic font-medium">low-latency digital signals</span>."
+              "{h.quote.pre}{' '}
+              <span className="text-slate-300 not-italic font-medium">{h.quote.h1}</span>{' '}
+              {h.quote.mid}{' '}
+              <span className="text-slate-300 not-italic font-medium">{h.quote.h2}</span>."
             </span>
           </div>
         </motion.div>
@@ -313,13 +317,13 @@ export default function Hero() {
           custom={0.5}
           className="flex flex-wrap justify-center gap-3 mb-10"
         >
-          {badges.map(({ icon: Icon, label }) => (
+          {badgeIcons.map((Icon, i) => (
             <div
-              key={label}
+              key={badgeLabels[i]}
               className="flex items-center gap-2 px-4 py-2 rounded-lg glassmorphism text-sm text-text-secondary"
             >
               <Icon size={14} className="text-orange-DEFAULT shrink-0" />
-              <span>{label}</span>
+              <span>{badgeLabels[i]}</span>
             </div>
           ))}
         </motion.div>
@@ -340,7 +344,7 @@ export default function Hero() {
             }}
             className="w-full sm:w-auto px-6 py-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm shadow-orange-glow transition-colors duration-200 text-center"
           >
-            View Projects
+            {h.cta.projects}
           </a>
           <a
             href="#contact"
@@ -350,7 +354,7 @@ export default function Hero() {
             }}
             className="w-full sm:w-auto px-6 py-3 rounded-lg bg-transparent border-2 border-slate-500 hover:border-slate-300 text-slate-200 hover:text-white font-semibold text-sm transition-colors duration-200 text-center"
           >
-            Let's Connect
+            {h.cta.connect}
           </a>
           <a
             href="/assets/Wurad_A_Resume.pdf"
@@ -359,10 +363,10 @@ export default function Hero() {
             rel="noopener noreferrer"
             className="w-full sm:w-auto px-6 py-3 rounded-lg bg-transparent border border-orange-DEFAULT/40 hover:border-orange-DEFAULT/80 text-orange-DEFAULT hover:text-orange-300 font-semibold text-sm transition-colors duration-200 text-center font-mono"
           >
-            ↓ Download CV
+            {h.cta.cv}
           </a>
         </motion.div>
-      </div>
+      </div>{/* end content wrapper */}
 
       {/* Scroll hint */}
       <motion.div
@@ -371,7 +375,7 @@ export default function Hero() {
         transition={{ delay: 1.5, duration: 0.8 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-400"
       >
-        <span className="text-xs font-mono tracking-widest uppercase animate-pulse">Scroll</span>
+        <span className="text-xs font-mono tracking-widest uppercase animate-pulse">{h.cta.scroll}</span>
         <ChevronDown size={16} className="animate-bounce" />
       </motion.div>
     </section>
