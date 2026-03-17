@@ -1,0 +1,3 @@
+# Stealth mode — suppress all crawler indexing
+User-agent: *
+Disallow: /

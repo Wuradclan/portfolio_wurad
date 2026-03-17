@@ -45,7 +45,7 @@ export default function About() {
             {/* Two-column layout: photo + text */}
             <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8 lg:gap-12 items-start mb-8">
 
-              {/* ── Photo column ── */}
+              {/* ── Monogram column ── */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={isVisible ? { opacity: 1, x: 0 } : {}}
@@ -53,11 +53,12 @@ export default function About() {
                 className="flex flex-col items-center lg:items-start gap-3"
               >
                 <div className="relative">
-                  {/* Glow halo behind photo */}
+                  {/* Glow halo */}
                   <div className="absolute -inset-3 rounded-2xl bg-orange-DEFAULT/10 blur-2xl pointer-events-none" />
+                  {/* Profile image */}
                   <img
-                    src="/assets/profile-photo.webp"
-                    alt="Wurad A. — Lead Architect, Intelligent & Secured Industrial Ecosystems"
+                    src="/assets/hero_banner.webp"
+                    alt="Lead Architect Profile Cartoon"
                     loading="lazy"
                     decoding="async"
                     className="relative w-44 h-44 lg:w-full lg:h-auto aspect-square object-cover rounded-2xl border border-white/10 shadow-xl"
@@ -69,11 +70,11 @@ export default function About() {
                   </span>
                 </div>
 
-                {/* Name plate */}
+                {/* Label plate */}
                 <div className="text-center lg:text-left">
-                  <p className="font-mono font-bold text-sm text-text-primary">Wurad A.</p>
+                  <p className="font-mono font-bold text-sm text-text-primary">Lead Architect</p>
                   <p className="font-mono text-[10px] text-text-muted mt-0.5">
-                    Lead Architect | AI • XR • IIoT
+                    AI&nbsp;•&nbsp;XR&nbsp;•&nbsp;IIoT
                   </p>
                 </div>
               </motion.div>
@@ -86,8 +87,8 @@ export default function About() {
                 className="flex flex-col justify-center"
               >
                 <p className="text-base sm:text-lg text-text-secondary leading-relaxed">
-                  A multidisciplinary{' '}
-                  <span className="text-text-primary font-semibold">Systems Architect</span>{' '}
+                  A{' '}
+                  <span className="text-text-primary font-semibold">Lead Architect</span>{' '}
                   with a rare duality:{' '}
                   <span className="text-orange-DEFAULT font-medium">11 years of operational grit</span>{' '}
                   in heavy industry coupled with advanced research in{' '}
